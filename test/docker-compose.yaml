@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  go-eventstore-query:
+    image: terrextech/go-eventstore-query:v1.0.0
+    env_file:
+      - ../event_store_query.env
+    environment:
+      CASSANDRA_HOSTS: cassandra:9042
+      CGO_ENABLED: 0
+      GOOS: linux
+      KAFKA_BROKERS: kafka:9092
+
+  go-eventpersistence:
+    image: terrextech/go-eventpersistence:v1.5.1
+    env_file:
+      - ../persistence.env
+    environment:
+      CASSANDRA_HOSTS: cassandra:9042
+      CGO_ENABLED: 0
+      GOOS: linux
+      KAFKA_BROKERS: kafka:9092
+
+  # mongodb:
+  #   image: mongo
+  #   container_name: mongoutils_mongodb
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: root
+  #   ports:
+  #     - "27017:27017"
+
+  # kafka:
+  #   image: confluent/kafka
+  #   container_name: kafka
+  #   environment:
+  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  #   links:
+  #     - zookeeper
+  #   ports:
+  #     - "9092:9092"
+
+  # zookeeper:
+  #   image: zookeeper
+  #   container_name: zookeeper
+  #   ports:
+  #     - 2181:2181
+
+
+  # cassandra:
+  #   image: bitnami/cassandra:latest
+  #   container_name: cassandra
+  #   ports:
+  #     - "9042:9042"
+  #   env_file:
+  #     - ../.env
